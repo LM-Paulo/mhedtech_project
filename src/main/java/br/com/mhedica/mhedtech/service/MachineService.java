@@ -10,13 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MachineService {
 
-    static org.jboss.logging.Logger logger = Logger.getLogger(UserService.class.getName());
+    static org.jboss.logging.Logger logger = Logger.getLogger(MachineService.class.getName());
     @Autowired
     private MachineRepository machineRepository;
 
@@ -29,7 +28,7 @@ public class MachineService {
 
         }catch (Exception ex){
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("Could not find machine. -> ->");
+            stringBuilder.append("Unable to register machine. -> ->");
             stringBuilder.append(ex.getMessage());
             logger.log(org.jboss.logging.Logger.Level.ERROR,stringBuilder);
 

@@ -1,10 +1,10 @@
 package br.com.mhedica.mhedtech.controller;
 
 import br.com.mhedica.mhedtech.dto.PeriphelralDto;
-import br.com.mhedica.mhedtech.repository.PeriphelralRepository;
+import br.com.mhedica.mhedtech.exceptions.BusinessException;
 import br.com.mhedica.mhedtech.service.PeriphelralService;
 import jakarta.persistence.NoResultException;
-import org.hibernate.ObjectNotFoundException;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -15,31 +15,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/periphelral")
 public class PeriphelralController {
 
-
-    @Autowired
-     private PeriphelralRepository periphelralRepository;
+    static org.jboss.logging.Logger logger = Logger.getLogger(PeriphelralController.class.getName());
 
     @Autowired
     private PeriphelralService periphelralService;
 
 
     @PostMapping("/create-peripheral")
-    public ResponseEntity<String> createPeripheral(@RequestBody PeriphelralDto periphelralDto) {
+    public ResponseEntity<String> createPeripheral(@RequestBody PeriphelralDto periphelralDto) throws BusinessException {
 
         try {
-            System.out.println(periphelralDto.getConfig());
-            System.out.println(periphelralDto.getModel());
-
-
             periphelralService.createPeripheral(periphelralDto);
-            return ResponseEntity.ok("Peripheral created successfully!");
-        } catch (Exception ex) {
-            StringBuilder mensagemRetorno = new StringBuilder();
-            mensagemRetorno.append("Unable to create peripheral ->");
-            mensagemRetorno.append(ex.getMessage());
-            return ResponseEntity.ok(mensagemRetorno.toString());
+
+        }catch (BusinessException ex){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("could not create peripheral -> ");
+            stringBuilder.append(ex.getMessage());
+            logger.log(org.jboss.logging.Logger.Level.ERROR,stringBuilder);
+            ResponseEntity.badRequest().body(stringBuilder);
         }
 
+        return ResponseEntity.ok("Peripheral created successfully!");
     }
 
 
@@ -49,26 +45,26 @@ public class PeriphelralController {
                                              @RequestParam("page") Integer page,
                                              @RequestParam("size") Integer size) {
 
-
         try {
-            PeriphelralDto periphelralDto = new PeriphelralDto();
-            return ResponseEntity.ok(periphelralService.peripheralList(Sort.by(direction, properties), page, size));
-
-        } catch (NoResultException ex) {
-            return ResponseEntity.ok("Peripherals not found.");
+            periphelralService.peripheralList(Sort.by(direction, properties), page, size);
+        }catch (NoResultException ex){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("unable to list peripherals -> ");
+            stringBuilder.append(ex.getMessage());
+            logger.log(org.jboss.logging.Logger.Level.ERROR,stringBuilder);
+            ResponseEntity.badRequest().body(stringBuilder);
         }
+
+        return ResponseEntity.ok("successfully listed");
+
 
     }
 
     @DeleteMapping("/delete-Peripheral/{id}")
     public ResponseEntity<?> deletePeripheral(@PathVariable("id") Integer ID) {
-        try {
-            periphelralService.deletePeripheral(ID);
-        } catch (ObjectNotFoundException ex) {
-            return ResponseEntity.ok(ex.getMessage());
-        }
-        return ResponseEntity.ok("Peripheral has been deleted ");
 
+        periphelralService.deletePeripheral(ID);
+        return ResponseEntity.ok("Peripheral has been deleted ");
     }
 
 }

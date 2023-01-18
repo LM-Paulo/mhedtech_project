@@ -31,8 +31,6 @@ public class UserService {
     private MachineRepository machineRepository;
 
 
-
-
     public void createUser(UserDto userDto) throws NoResultException {
 
         UserEntity userEntity = new UserEntity();
@@ -53,7 +51,6 @@ public class UserService {
             ResponseEntity.ok(stringBuilder.toString());
 
         }
-
 
     }
 
@@ -102,7 +99,6 @@ public class UserService {
             }
 
         }
-
 
     }
 
