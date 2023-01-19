@@ -8,13 +8,11 @@ import br.com.mhedica.mhedtech.repository.MachineRepository;
 import br.com.mhedica.mhedtech.repository.PeriphelralRepository;
 import jakarta.persistence.NoResultException;
 import org.hibernate.ObjectNotFoundException;
-import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,7 +20,6 @@ import java.util.Optional;
 @Service
 public class PeriphelralService {
 
-    static org.jboss.logging.Logger logger = Logger.getLogger(PeriphelralService.class.getName());
     @Autowired
     private PeriphelralRepository periphelralRepository;
 
@@ -36,24 +33,19 @@ public class PeriphelralService {
         PeriphelralEntity periphelralEntity = new PeriphelralEntity();
 
         Optional<MachineEntity> machine = machineRepository.findBypatrimony(periphelralDto.getMachine());
-        if(!machine.isPresent()){
+        if(!machine.isPresent()) {
             throw new BusinessException("machine not found");
         }
         periphelralDto.setEntity(periphelralEntity);
         periphelralEntity.setMachine(machine.get());
         periphelralRepository.save(periphelralEntity);
+
     }
 
 
     public Page<PeriphelralEntity> peripheralList (Sort sort, Integer page, Integer size) throws NoResultException{
-
-        try {
             Pageable pageable = PageRequest.of(page,size,sort);
             return periphelralRepository.findAll(pageable);
-        }catch (Exception ex){
-            //logger.error("Unable to locate peripherals ->" , ex.getMessage());
-            throw new NoResultException();
-        }
 
     }
 

@@ -8,10 +8,9 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("api/periphelral")
 public class PeriphelralController {
 
@@ -22,7 +21,7 @@ public class PeriphelralController {
 
 
     @PostMapping("/create-peripheral")
-    public ResponseEntity<String> createPeripheral(@RequestBody PeriphelralDto periphelralDto) throws BusinessException {
+    public ResponseEntity<String> createPeripheral(@RequestBody PeriphelralDto periphelralDto) {
 
         try {
             periphelralService.createPeripheral(periphelralDto);
@@ -63,7 +62,16 @@ public class PeriphelralController {
     @DeleteMapping("/delete-Peripheral/{id}")
     public ResponseEntity<?> deletePeripheral(@PathVariable("id") Integer ID) {
 
-        periphelralService.deletePeripheral(ID);
+        try{
+            periphelralService.deletePeripheral(ID);
+        }catch (NoResultException ex){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("id cannot be found -> ");
+            stringBuilder.append(ex.getMessage());
+            logger.log(org.jboss.logging.Logger.Level.ERROR,stringBuilder);
+            ResponseEntity.badRequest().body(stringBuilder);
+        }
+
         return ResponseEntity.ok("Peripheral has been deleted ");
     }
 
