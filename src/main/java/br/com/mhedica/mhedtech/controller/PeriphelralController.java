@@ -31,9 +31,8 @@ public class PeriphelralController {
             stringBuilder.append("could not create peripheral -> ");
             stringBuilder.append(ex.getMessage());
             logger.log(org.jboss.logging.Logger.Level.ERROR,stringBuilder);
-            ResponseEntity.badRequest().body(stringBuilder);
+            return ResponseEntity.ok(stringBuilder.toString());
         }
-
         return ResponseEntity.ok("Peripheral created successfully!");
     }
 
@@ -45,16 +44,15 @@ public class PeriphelralController {
                                              @RequestParam("size") Integer size) {
 
         try {
-            periphelralService.peripheralList(Sort.by(direction, properties), page, size);
+            return ResponseEntity.ok(periphelralService.peripheralList(Sort.by(direction,properties),page,size));
+            //periphelralService.peripheralList(Sort.by(direction, properties), page, size);
         }catch (NoResultException ex){
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("unable to list peripherals -> ");
             stringBuilder.append(ex.getMessage());
             logger.log(org.jboss.logging.Logger.Level.ERROR,stringBuilder);
-            ResponseEntity.badRequest().body(stringBuilder);
+            return ResponseEntity.ok(stringBuilder.toString());
         }
-
-        return ResponseEntity.ok("successfully listed");
 
 
     }
@@ -69,7 +67,7 @@ public class PeriphelralController {
             stringBuilder.append("id cannot be found -> ");
             stringBuilder.append(ex.getMessage());
             logger.log(org.jboss.logging.Logger.Level.ERROR,stringBuilder);
-            ResponseEntity.badRequest().body(stringBuilder);
+            return ResponseEntity.ok(stringBuilder.toString());
         }
 
         return ResponseEntity.ok("Peripheral has been deleted ");

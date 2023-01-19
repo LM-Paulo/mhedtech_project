@@ -64,7 +64,7 @@ public class UserController {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("user not found. -> ");
             stringBuilder.append(ex.getMessage());
-            return ResponseEntity.ok(stringBuilder);
+            return ResponseEntity.ok(stringBuilder.toString());
         }
     }
 
@@ -77,7 +77,7 @@ public class UserController {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("user not found. -> ");
             stringBuilder.append(ex.getMessage());
-            return ResponseEntity.ok(stringBuilder);
+            return ResponseEntity.ok(stringBuilder.toString());
         }
 
         return ResponseEntity.ok("User has been deleted ");
@@ -93,7 +93,7 @@ public class UserController {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("user not found. -> ");
             stringBuilder.append(ex.getMessage());
-            return ResponseEntity.ok(stringBuilder);
+            return ResponseEntity.ok(stringBuilder.toString());
         }
 
         return ResponseEntity.ok("The user has been updated ");
