@@ -45,7 +45,6 @@ public class PeriphelralController {
 
         try {
             return ResponseEntity.ok(periphelralService.peripheralList(Sort.by(direction,properties),page,size));
-            //periphelralService.peripheralList(Sort.by(direction, properties), page, size);
         }catch (NoResultException ex){
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("unable to list peripherals -> ");
