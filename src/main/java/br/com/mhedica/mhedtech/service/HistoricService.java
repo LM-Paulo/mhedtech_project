@@ -26,7 +26,7 @@ public class HistoricService {
 
 
 
-    public void createHistory(HistoricDto historicDto) throws BusinessException {
+    public void createHistoric(HistoricDto historicDto) throws BusinessException {
 
         HistoricEntity historicEntity = new HistoricEntity();
         historicDto.setEntity(historicEntity);

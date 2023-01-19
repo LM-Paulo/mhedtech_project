@@ -22,7 +22,7 @@ public class HistoricController {
     public ResponseEntity<String> createHistory(@RequestBody HistoricDto historicDto){
 
         try {
-            historicService.createHistory(historicDto);
+            historicService.createHistoric(historicDto);
         }catch (Exception ex){
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("Unable to create history. -> ");
